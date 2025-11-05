@@ -103,7 +103,14 @@ const Results = () => {
                   </Button>
                 </div>
               ) : (
-                <ChatInterface />
+                <div className="animate-fade-in">
+                  <div className="mb-6">
+                    <h2 className="text-2xl font-bold text-primary">
+                      Converse com o Atlas sobre este processo
+                    </h2>
+                  </div>
+                  <ChatInterface />
+                </div>
               )}
             </div>
           </div>

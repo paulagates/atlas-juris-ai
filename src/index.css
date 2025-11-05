@@ -21,7 +21,8 @@ All colors MUST be HSL.
     --primary: 207 77% 28%;
     --primary-foreground: 0 0% 100%;
 
-    /* Dourado #f39c12 - hsl(38, 87%, 54%) */
+    /* Dourado claro #f8c471 - hsl(38, 87%, 70%) */
+    /* Dourado intenso #f39c12 - hsl(38, 87%, 54%) */
     --secondary: 38 87% 54%;
     --secondary-foreground: 207 77% 20%;
 
@@ -30,6 +31,10 @@ All colors MUST be HSL.
 
     --accent: 38 87% 54%;
     --accent-foreground: 207 77% 20%;
+    
+    /* Dourado claro para gradiente */
+    --gold-light: 38 87% 70%;
+    --gold-dark: 38 87% 54%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
@@ -42,7 +47,8 @@ All colors MUST be HSL.
 
     /* Gradientes institucionais */
     --gradient-primary: linear-gradient(135deg, hsl(207, 77%, 28%), hsl(207, 77%, 35%));
-    --gradient-accent: linear-gradient(135deg, hsl(38, 87%, 54%), hsl(38, 87%, 62%));
+    --gradient-gold: linear-gradient(135deg, hsl(38, 87%, 70%), hsl(38, 87%, 54%));
+    --gradient-gold-horizontal: linear-gradient(90deg, hsl(38, 87%, 70%), hsl(38, 87%, 54%));
     --gradient-hero: linear-gradient(135deg, hsl(207, 77%, 28%) 0%, hsl(207, 60%, 40%) 100%);
     
     /* Sombras suaves */

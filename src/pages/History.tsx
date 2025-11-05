@@ -65,9 +65,11 @@ const History = () => {
               >
                 <CardHeader>
                   <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1">
+                  <div className="flex-1">
                       <CardTitle className="text-lg text-primary flex items-center gap-2">
-                        <FileText className="w-5 h-5 text-accent" />
+                        <div className="flex items-center justify-center w-8 h-8 bg-gradient-gold rounded-lg">
+                          <FileText className="w-4 h-4 text-foreground" />
+                        </div>
                         {item.processNumber}
                       </CardTitle>
                       <CardDescription className="mt-2 flex items-center gap-4 text-sm">

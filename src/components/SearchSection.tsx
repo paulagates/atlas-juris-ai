@@ -28,10 +28,10 @@ const SearchSection = () => {
           <span className="text-sm font-medium">Inteligência Artificial Jurídica</span>
         </div>
         <h1 className="text-4xl md:text-5xl font-bold text-primary mb-4">
-          Atlas Jurisprudências
+          Encontre jurisprudências a partir de um processo judicial
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Insira o número do processo para analisar as jurisprudências aplicáveis
+          Digite o número do processo para que o Atlas encontre as jurisprudências aplicáveis
         </p>
       </div>
 
@@ -51,7 +51,7 @@ const SearchSection = () => {
 
           <Button 
             onClick={handleSearch}
-            className="w-full h-14 text-lg font-semibold bg-gradient-primary hover:opacity-90 transition-opacity shadow-medium"
+            className="w-full h-14 text-lg font-semibold bg-primary text-primary-foreground hover:bg-gradient-gold hover:text-foreground transition-all shadow-medium"
           >
             <Search className="w-5 h-5 mr-2" />
             Buscar Jurisprudências

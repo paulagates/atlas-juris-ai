@@ -17,7 +17,7 @@ const ChatInterface = () => {
     {
       id: "1",
       role: "assistant",
-      content: "Olá! Sou o Atlas Jurisprudências. Pergunte-me sobre este processo ou as jurisprudências relacionadas.",
+      content: "Encontrei as jurisprudências mais relevantes. Deseja que eu explique a principal ou compare com outra decisão?",
       timestamp: new Date(),
     },
   ]);
@@ -96,8 +96,8 @@ const ChatInterface = () => {
               <div
                 className={`rounded-lg px-4 py-3 max-w-[80%] ${
                   message.role === "user"
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-foreground"
+                    ? "bg-gradient-gold text-foreground"
+                    : "bg-primary/5 text-foreground border border-primary/10"
                 }`}
               >
                 <p className="text-sm leading-relaxed">{message.content}</p>
@@ -110,9 +110,9 @@ const ChatInterface = () => {
               </div>
 
               {message.role === "user" && (
-                <Avatar className="bg-primary">
+                <Avatar className="bg-gradient-gold">
                   <AvatarFallback>
-                    <User className="w-4 h-4 text-primary-foreground" />
+                    <User className="w-4 h-4 text-foreground" />
                   </AvatarFallback>
                 </Avatar>
               )}
@@ -142,13 +142,13 @@ const ChatInterface = () => {
       <div className="border-t border-border p-4 bg-background">
         <div className="flex gap-2">
           <Input
-            placeholder="Digite sua pergunta..."
+            placeholder="Pergunte ao Atlas sobre este processo ou as jurisprudências exibidas…"
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
             onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
             className="flex-1"
           />
-          <Button onClick={handleSendMessage} size="icon" className="shrink-0">
+          <Button onClick={handleSendMessage} size="icon" className="shrink-0 bg-primary hover:bg-primary/90">
             <Send className="w-4 h-4" />
           </Button>
         </div>

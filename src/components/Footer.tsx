@@ -8,8 +8,8 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Logo e instituição */}
           <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-10 h-10 bg-accent rounded-lg">
-              <Scale className="w-6 h-6 text-primary" />
+            <div className="flex items-center justify-center w-10 h-10 bg-gradient-gold rounded-lg">
+              <Scale className="w-6 h-6 text-foreground" />
             </div>
             <div className="flex flex-col">
               <span className="font-semibold text-lg">Atlas Jurisprudências</span>
@@ -19,13 +19,13 @@ const Footer = () => {
 
           {/* Links */}
           <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
-            <Link to="/politica" className="hover:text-accent transition-colors">
+            <Link to="/politica" className="hover:bg-gradient-gold hover:bg-clip-text hover:text-transparent transition-all">
               Política de Privacidade
             </Link>
-            <Link to="/termos" className="hover:text-accent transition-colors">
+            <Link to="/termos" className="hover:bg-gradient-gold hover:bg-clip-text hover:text-transparent transition-all">
               Termos de Uso
             </Link>
-            <Link to="/suporte" className="hover:text-accent transition-colors">
+            <Link to="/suporte" className="hover:bg-gradient-gold hover:bg-clip-text hover:text-transparent transition-all">
               Suporte
             </Link>
           </div>

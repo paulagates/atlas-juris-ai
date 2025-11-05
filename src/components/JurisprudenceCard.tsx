@@ -24,7 +24,7 @@ const JurisprudenceCard = ({
     <Card 
       className={`group hover:shadow-medium transition-all duration-300 animate-fade-in ${
         isHighlighted 
-          ? "border-2 border-accent shadow-highlight bg-accent/5" 
+          ? "border-2 bg-gradient-gold/10 shadow-highlight relative before:absolute before:inset-0 before:rounded-lg before:p-[2px] before:bg-gradient-gold before:-z-10" 
           : "border-border"
       }`}
     >

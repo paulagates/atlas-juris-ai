@@ -13,11 +13,11 @@ const Header = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="flex items-center justify-center w-12 h-12 bg-gradient-accent rounded-lg shadow-medium transition-transform group-hover:scale-105">
-              <Scale className="w-7 h-7 text-primary-foreground" />
+            <div className="flex items-center justify-center w-12 h-12 bg-gradient-gold rounded-lg shadow-medium transition-transform group-hover:scale-105">
+              <Scale className="w-7 h-7 text-foreground" />
             </div>
             <div className="flex flex-col">
-              <span className="text-2xl font-bold text-accent">Atlas</span>
+              <span className="text-2xl font-bold bg-gradient-gold bg-clip-text text-transparent">Atlas</span>
               <span className="text-sm font-medium text-primary">Jurisprudências</span>
             </div>
           </Link>
