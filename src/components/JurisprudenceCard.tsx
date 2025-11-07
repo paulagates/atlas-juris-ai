@@ -8,6 +8,7 @@ interface JurisprudenceCardProps {
   tribunal: string;
   date: string;
   excerpt: string;
+  relevanceReason?: string;
   isHighlighted?: boolean;
   onViewDetails: () => void;
 }
@@ -17,6 +18,7 @@ const JurisprudenceCard = ({
   tribunal,
   date,
   excerpt,
+  relevanceReason,
   isHighlighted = false,
   onViewDetails,
 }: JurisprudenceCardProps) => {
@@ -60,6 +62,17 @@ const JurisprudenceCard = ({
         <CardDescription className="text-sm leading-relaxed line-clamp-3">
           {excerpt}
         </CardDescription>
+
+        {relevanceReason && (
+          <div className="bg-accent/10 border border-accent/20 rounded-lg p-3">
+            <p className="text-xs font-semibold text-accent mb-1">
+              Fundamentação da Relevância:
+            </p>
+            <p className="text-xs text-foreground/80 leading-relaxed">
+              {relevanceReason}
+            </p>
+          </div>
+        )}
 
         <Button 
           variant="outline" 

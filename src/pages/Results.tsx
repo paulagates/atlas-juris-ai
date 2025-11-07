@@ -21,6 +21,7 @@ const Results = () => {
       tribunal: "STJ - Superior Tribunal de Justiça",
       date: "15/03/2024",
       excerpt: "A responsabilidade civil por danos morais e materiais decorrentes de acidente de trânsito é objetiva quando comprovado o nexo causal entre a conduta e o dano. Precedentes jurisprudenciais consolidados neste sentido.",
+      relevanceReason: "Precedente vinculante do STJ com aplicação direta ao caso. Aborda especificamente a questão da responsabilidade objetiva em acidentes de trânsito, que é o tema central do processo consultado.",
       isHighlighted: true,
     },
     {
@@ -29,6 +30,7 @@ const Results = () => {
       tribunal: "TJSP - Tribunal de Justiça de São Paulo",
       date: "10/03/2024",
       excerpt: "O deferimento de liminar em tutela de urgência requer a demonstração inequívoca dos requisitos de probabilidade do direito e perigo de dano ou risco ao resultado útil do processo.",
+      relevanceReason: "Decisão recente do TJSP que estabelece critérios semelhantes aos aplicados no processo. Jurisprudência dominante no tribunal competente para análise do recurso.",
       isHighlighted: false,
     },
     {
@@ -37,6 +39,7 @@ const Results = () => {
       tribunal: "TJRJ - Tribunal de Justiça do Rio de Janeiro",
       date: "05/03/2024",
       excerpt: "A revisão contratual por onerosidade excessiva é cabível quando demonstrada alteração substancial das circunstâncias que fundamentaram a celebração do negócio jurídico.",
+      relevanceReason: "Caso análogo envolvendo interpretação de cláusulas contratuais em situações excepcionais. Fundamentação utilizada pode servir como argumento subsidiário na peça processual.",
       isHighlighted: false,
     },
   ];
