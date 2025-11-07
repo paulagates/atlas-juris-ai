@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { MessageSquare, Scale, Sparkles } from "lucide-react";
+import { MessageSquare, Scale, Sparkles, Loader2 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import JurisprudenceCard from "@/components/JurisprudenceCard";
 import ChatInterface from "@/components/ChatInterface";
 import JurisprudenceDetailDialog from "@/components/JurisprudenceDetailDialog";
+import AnalysisResult from "@/components/AnalysisResult";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
@@ -17,9 +18,14 @@ const Results = () => {
   const [showChat, setShowChat] = useState(false);
   const [selectedJurisprudence, setSelectedJurisprudence] = useState<any>(null);
   const [showDetailDialog, setShowDetailDialog] = useState(false);
+  const [isGeneratingAnalysis, setIsGeneratingAnalysis] = useState(false);
+  const [analysisResult, setAnalysisResult] = useState<any>(null);
 
   // Determina se deve mostrar jurisprudência destacada (apenas para processo ou arquivo)
   const shouldShowHighlighted = !!(processNumber || arquivo) && !tema;
+  
+  // Determina se é busca por tema
+  const isThemeSearch = !!tema && !processNumber && !arquivo;
 
   // Dados mockados de jurisprudências
   const jurisprudences = [
@@ -107,6 +113,42 @@ Pelo exposto, dou provimento ao recurso para determinar a revisão das cláusula
     setShowDetailDialog(true);
   };
 
+  const handleGenerateAnalysis = async () => {
+    setIsGeneratingAnalysis(true);
+    
+    // Simula geração de análise (aqui você integraria com Lovable AI)
+    setTimeout(() => {
+      setAnalysisResult({
+        summary: `Após análise detalhada das ${jurisprudences.length} jurisprudências encontradas, observa-se uma linha jurisprudencial consolidada nos tribunais superiores quanto à responsabilidade civil em acidentes de trânsito.
+
+O STJ tem reiteradamente reconhecido a aplicação da responsabilidade objetiva quando demonstrado o nexo causal entre a conduta do agente e o dano causado, conforme precedente vinculante mais relevante ao caso (REsp 1.234.567/SP).
+
+Os tribunais estaduais seguem essa mesma orientação, estabelecendo critérios claros para a caracterização do dever de indenizar, incluindo danos morais e materiais. A jurisprudência analisada demonstra uniformidade na aplicação dos artigos 186, 927 e 944 do Código Civil.`,
+        strengths: [
+          "Precedente vinculante do STJ (REsp 1.234.567/SP) estabelece entendimento favorável quanto à responsabilidade objetiva em casos análogos ao presente",
+          "Jurisprudência consolidada e uniforme nos tribunais superiores sobre a aplicação do nexo causal como elemento essencial da responsabilidade civil",
+          "Reconhecimento pacífico do direito à indenização por danos morais em casos de lesões graves com sequelas permanentes",
+          "Ampla documentação probatória disponível nas decisões analisadas que podem fundamentar a tese defensiva"
+        ],
+        weaknesses: [
+          "Necessidade de demonstração inequívoca do nexo causal entre a conduta e o dano, conforme exigido pelo precedente do STJ",
+          "Alguns tribunais têm adotado critérios mais rigorosos para a quantificação de danos morais, o que pode impactar o valor da indenização",
+          "A existência de culpa concorrente pode reduzir substancialmente o montante indenizatório, conforme jurisprudência do TJSP",
+          "Tendência recente de maior rigor na análise de provas periciais para caracterização de sequelas permanentes"
+        ],
+        recommendations: [
+          "Utilizar o precedente do STJ (REsp 1.234.567/SP) como fundamento principal da argumentação, dada sua natureza vinculante e aplicação direta ao caso",
+          "Reforçar a demonstração do nexo causal através de laudos periciais detalhados e prova testemunhal consistente",
+          "Antecipar possíveis alegações de culpa concorrente com argumentação preventiva baseada na jurisprudência favorável do TJRJ",
+          "Considerar a quantificação dos danos morais com base em precedentes recentes dos tribunais superiores para evitar arbitramento insuficiente",
+          "Juntar aos autos cópias das jurisprudências mais relevantes, especialmente o acórdão completo do REsp 1.234.567/SP"
+        ],
+        conclusion: "A análise consolidada das jurisprudências demonstra uma alta probabilidade de êxito da tese jurídica proposta, especialmente considerando o precedente vinculante do STJ que se aplica diretamente ao caso concreto. Recomenda-se fundamentar a peça processual prioritariamente neste precedente, reforçando a demonstração do nexo causal e antecipando possíveis contraposições da parte adversa. A linha jurisprudencial é favorável e consolidada, o que confere segurança jurídica à estratégia adotada."
+      });
+      setIsGeneratingAnalysis(false);
+    }, 2000);
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
@@ -145,20 +187,36 @@ Pelo exposto, dou provimento ao recurso para determinar a revisão das cláusula
           </div>
         </div>
 
-        {/* Botão de Análise Geral */}
-        <div className="mb-6 animate-fade-in">
-          <Button
-            size="lg"
-            className="w-full bg-gradient-primary hover:opacity-90"
-            onClick={() => {
-              console.log("Análise geral iniciada");
-              setShowChat(true);
-            }}
-          >
-            <Sparkles className="w-5 h-5 mr-2" />
-            Gerar Análise Completa do Caso com todas Jurisprudências
-          </Button>
-        </div>
+        {/* Botão de Análise Geral - apenas para processo/arquivo */}
+        {!isThemeSearch && (
+          <div className="mb-6 animate-fade-in">
+            <Button
+              size="lg"
+              className="w-full bg-gradient-primary hover:opacity-90"
+              onClick={handleGenerateAnalysis}
+              disabled={isGeneratingAnalysis}
+            >
+              {isGeneratingAnalysis ? (
+                <>
+                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                  Gerando análise...
+                </>
+              ) : (
+                <>
+                  <Sparkles className="w-5 h-5 mr-2" />
+                  Gerar Análise Completa do Caso com todas Jurisprudências
+                </>
+              )}
+            </Button>
+          </div>
+        )}
+
+        {/* Resultado da Análise */}
+        {analysisResult && (
+          <div className="mb-6">
+            <AnalysisResult analysis={analysisResult} />
+          </div>
+        )}
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Lista de Jurisprudências */}
@@ -167,6 +225,7 @@ Pelo exposto, dou provimento ao recurso para determinar a revisão das cláusula
               <JurisprudenceCard
                 key={jurisprudence.id}
                 {...jurisprudence}
+                showRelevanceReason={!isThemeSearch}
                 onViewDetails={() => handleViewDetails(jurisprudence)}
               />
             ))}

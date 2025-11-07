@@ -11,6 +11,7 @@ interface JurisprudenceCardProps {
   excerpt: string;
   relevanceReason?: string;
   isHighlighted?: boolean;
+  showRelevanceReason?: boolean;
   onViewDetails: () => void;
 }
 
@@ -21,6 +22,7 @@ const JurisprudenceCard = ({
   excerpt,
   relevanceReason,
   isHighlighted = false,
+  showRelevanceReason = true,
   onViewDetails,
 }: JurisprudenceCardProps) => {
   const [isReasonExpanded, setIsReasonExpanded] = useState(false);
@@ -66,7 +68,7 @@ const JurisprudenceCard = ({
           {excerpt}
         </CardDescription>
 
-        {relevanceReason && (
+        {relevanceReason && showRelevanceReason && (
           <div className="bg-accent/10 border border-accent/20 rounded-lg overflow-hidden">
             <button
               onClick={() => setIsReasonExpanded(!isReasonExpanded)}
