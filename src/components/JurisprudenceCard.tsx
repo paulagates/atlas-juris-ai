@@ -1,4 +1,5 @@
-import { Scale, Calendar, Building2, Sparkles, ChevronRight } from "lucide-react";
+import { Scale, Calendar, Building2, Sparkles, ChevronRight, ChevronDown } from "lucide-react";
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
@@ -22,6 +23,8 @@ const JurisprudenceCard = ({
   isHighlighted = false,
   onViewDetails,
 }: JurisprudenceCardProps) => {
+  const [isReasonExpanded, setIsReasonExpanded] = useState(false);
+
   return (
     <Card 
       className={`group hover:shadow-medium transition-all duration-300 animate-fade-in ${
@@ -64,13 +67,27 @@ const JurisprudenceCard = ({
         </CardDescription>
 
         {relevanceReason && (
-          <div className="bg-accent/10 border border-accent/20 rounded-lg p-3">
-            <p className="text-xs font-semibold text-accent mb-1">
-              Fundamentação da Relevância:
-            </p>
-            <p className="text-xs text-foreground/80 leading-relaxed">
-              {relevanceReason}
-            </p>
+          <div className="bg-accent/10 border border-accent/20 rounded-lg overflow-hidden">
+            <button
+              onClick={() => setIsReasonExpanded(!isReasonExpanded)}
+              className="w-full flex items-center justify-between p-3 hover:bg-accent/5 transition-colors"
+            >
+              <p className="text-xs font-semibold text-accent">
+                Fundamentação da Relevância
+              </p>
+              <ChevronDown
+                className={`w-4 h-4 text-accent transition-transform ${
+                  isReasonExpanded ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+            {isReasonExpanded && (
+              <div className="px-3 pb-3 animate-fade-in">
+                <p className="text-xs text-foreground/80 leading-relaxed">
+                  {relevanceReason}
+                </p>
+              </div>
+            )}
           </div>
         )}
 
