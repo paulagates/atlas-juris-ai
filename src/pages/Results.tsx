@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { MessageSquare, Scale, Sparkles, Loader2 } from "lucide-react";
+import { MessageSquare, Scale, Sparkles, Loader2, FileText } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import JurisprudenceCard from "@/components/JurisprudenceCard";
@@ -10,6 +10,12 @@ import AnalysisResult from "@/components/AnalysisResult";
 import ProcessSummary from "@/components/ProcessSummary";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const Results = () => {
   const [searchParams] = useSearchParams();
@@ -19,6 +25,7 @@ const Results = () => {
   const [showChat, setShowChat] = useState(false);
   const [selectedJurisprudence, setSelectedJurisprudence] = useState<any>(null);
   const [showDetailDialog, setShowDetailDialog] = useState(false);
+  const [showProcessSummary, setShowProcessSummary] = useState(false);
   const [isGeneratingAnalysis, setIsGeneratingAnalysis] = useState(false);
   const [analysisResult, setAnalysisResult] = useState<any>(null);
 
@@ -164,9 +171,30 @@ Os tribunais estaduais seguem essa mesma orientação, estabelecendo critérios 
             </span>
           </div>
           <div className="flex items-start justify-between gap-4 mb-2">
-            <h1 className="text-3xl font-bold text-primary">
-              Jurisprudências relacionadas
-            </h1>
+            <div className="flex items-center gap-3">
+              <h1 className="text-3xl font-bold text-primary">
+                Jurisprudências relacionadas
+              </h1>
+              {!isThemeSearch && (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="shrink-0"
+                        onClick={() => setShowProcessSummary(true)}
+                      >
+                        <FileText className="w-5 h-5" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Ver resumo do processo</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )}
+            </div>
             {!isThemeSearch && (
               <Button
                 size="lg"
@@ -210,20 +238,6 @@ Os tribunais estaduais seguem essa mesma orientação, estabelecendo critérios 
           </div>
         </div>
 
-        {/* Resumo do Processo - apenas para processo/arquivo */}
-        {!isThemeSearch && (
-          <ProcessSummary
-            processNumber={processNumber || "0001234-56.2024.8.26.0100"}
-            subject="Responsabilidade Civil - Acidente de Trânsito - Indenização por Danos Morais e Materiais"
-            court="TJSP - Tribunal de Justiça de São Paulo"
-            date="15/01/2024"
-            parties={{
-              plaintiff: "João da Silva Santos",
-              defendant: "Maria Oliveira Costa"
-            }}
-            status="Em Andamento"
-          />
-        )}
 
         {/* Resultado da Análise - aparece acima das jurisprudências */}
         {analysisResult && (
@@ -284,6 +298,23 @@ Os tribunais estaduais seguem essa mesma orientação, estabelecendo critérios 
         onOpenChange={setShowDetailDialog}
         jurisprudence={selectedJurisprudence}
       />
+
+      {/* Modal de Resumo do Processo */}
+      {!isThemeSearch && (
+        <ProcessSummary
+          open={showProcessSummary}
+          onOpenChange={setShowProcessSummary}
+          processNumber={processNumber || "0001234-56.2024.8.26.0100"}
+          subject="Responsabilidade Civil - Acidente de Trânsito - Indenização por Danos Morais e Materiais"
+          court="TJSP - Tribunal de Justiça de São Paulo"
+          date="15/01/2024"
+          parties={{
+            plaintiff: "João da Silva Santos",
+            defendant: "Maria Oliveira Costa"
+          }}
+          status="Em Andamento"
+        />
+      )}
     </div>
   );
 };
