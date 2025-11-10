@@ -7,6 +7,7 @@ import JurisprudenceCard from "@/components/JurisprudenceCard";
 import ChatInterface from "@/components/ChatInterface";
 import JurisprudenceDetailDialog from "@/components/JurisprudenceDetailDialog";
 import AnalysisResult from "@/components/AnalysisResult";
+import ProcessSummary from "@/components/ProcessSummary";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
@@ -162,9 +163,31 @@ Os tribunais estaduais seguem essa mesma orientação, estabelecendo critérios 
               {processNumber ? "Processo" : tema ? "Tema" : "Busca"}
             </span>
           </div>
-          <h1 className="text-3xl font-bold text-primary mb-2">
-            Jurisprudências relacionadas
-          </h1>
+          <div className="flex items-start justify-between gap-4 mb-2">
+            <h1 className="text-3xl font-bold text-primary">
+              Jurisprudências relacionadas
+            </h1>
+            {!isThemeSearch && (
+              <Button
+                size="lg"
+                className="bg-gradient-primary hover:opacity-90 shrink-0"
+                onClick={handleGenerateAnalysis}
+                disabled={isGeneratingAnalysis}
+              >
+                {isGeneratingAnalysis ? (
+                  <>
+                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                    Gerando análise...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-5 h-5 mr-2" />
+                    Gerar Análise Completa
+                  </>
+                )}
+              </Button>
+            )}
+          </div>
           <div className="flex items-center gap-3 flex-wrap">
             {processNumber && (
               <Badge variant="outline" className="text-base px-3 py-1">
@@ -187,31 +210,22 @@ Os tribunais estaduais seguem essa mesma orientação, estabelecendo critérios 
           </div>
         </div>
 
-        {/* Botão de Análise Geral - apenas para processo/arquivo */}
+        {/* Resumo do Processo - apenas para processo/arquivo */}
         {!isThemeSearch && (
-          <div className="mb-6 animate-fade-in">
-            <Button
-              size="lg"
-              className="w-full bg-gradient-primary hover:opacity-90"
-              onClick={handleGenerateAnalysis}
-              disabled={isGeneratingAnalysis}
-            >
-              {isGeneratingAnalysis ? (
-                <>
-                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                  Gerando análise...
-                </>
-              ) : (
-                <>
-                  <Sparkles className="w-5 h-5 mr-2" />
-                  Gerar Análise Completa do Caso com todas Jurisprudências
-                </>
-              )}
-            </Button>
-          </div>
+          <ProcessSummary
+            processNumber={processNumber || "0001234-56.2024.8.26.0100"}
+            subject="Responsabilidade Civil - Acidente de Trânsito - Indenização por Danos Morais e Materiais"
+            court="TJSP - Tribunal de Justiça de São Paulo"
+            date="15/01/2024"
+            parties={{
+              plaintiff: "João da Silva Santos",
+              defendant: "Maria Oliveira Costa"
+            }}
+            status="Em Andamento"
+          />
         )}
 
-        {/* Resultado da Análise */}
+        {/* Resultado da Análise - aparece acima das jurisprudências */}
         {analysisResult && (
           <div className="mb-6">
             <AnalysisResult analysis={analysisResult} />
