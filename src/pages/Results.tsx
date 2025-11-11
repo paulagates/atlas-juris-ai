@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { MessageSquare, Scale, Sparkles, Loader2, FileText } from "lucide-react";
+import { Scale, Sparkles, Loader2, FileText } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import JurisprudenceCard from "@/components/JurisprudenceCard";
-import ChatInterface from "@/components/ChatInterface";
 import JurisprudenceDetailDialog from "@/components/JurisprudenceDetailDialog";
 import AnalysisResult from "@/components/AnalysisResult";
 import ProcessSummary from "@/components/ProcessSummary";
@@ -22,12 +21,15 @@ const Results = () => {
   const processNumber = searchParams.get("processo") || "";
   const tema = searchParams.get("tema") || "";
   const arquivo = searchParams.get("arquivo") || "";
-  const [showChat, setShowChat] = useState(false);
   const [selectedJurisprudence, setSelectedJurisprudence] = useState<any>(null);
   const [showDetailDialog, setShowDetailDialog] = useState(false);
   const [showProcessSummary, setShowProcessSummary] = useState(false);
   const [isGeneratingAnalysis, setIsGeneratingAnalysis] = useState(false);
   const [analysisResult, setAnalysisResult] = useState<any>(null);
+
+  // Dados do processo
+  const processTheme = "Responsabilidade Civil - Acidente de Trânsito";
+  const processBriefSummary = "Ação indenizatória por danos morais e materiais decorrentes de acidente de trânsito com lesões corporais e sequelas permanentes.";
 
   // Determina se deve mostrar jurisprudência destacada (apenas para processo ou arquivo)
   const shouldShowHighlighted = !!(processNumber || arquivo) && !tema;
@@ -216,25 +218,39 @@ Os tribunais estaduais seguem essa mesma orientação, estabelecendo critérios 
               </Button>
             )}
           </div>
-          <div className="flex items-center gap-3 flex-wrap">
-            {processNumber && (
-              <Badge variant="outline" className="text-base px-3 py-1">
-                {processNumber}
-              </Badge>
+          <div className="space-y-3">
+            <div className="flex items-center gap-3 flex-wrap">
+              {processNumber && (
+                <Badge variant="outline" className="text-base px-3 py-1">
+                  {processNumber}
+                </Badge>
+              )}
+              {tema && (
+                <Badge variant="outline" className="text-base px-3 py-1">
+                  {tema}
+                </Badge>
+              )}
+              {arquivo && (
+                <Badge variant="outline" className="text-base px-3 py-1">
+                  📎 {arquivo}
+                </Badge>
+              )}
+              <span className="text-sm text-muted-foreground">
+                {jurisprudences.length} jurisprudências encontradas
+              </span>
+            </div>
+            
+            {!isThemeSearch && (
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <Scale className="w-4 h-4 text-primary" />
+                  <h2 className="font-semibold text-primary">{processTheme}</h2>
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {processBriefSummary}
+                </p>
+              </div>
             )}
-            {tema && (
-              <Badge variant="outline" className="text-base px-3 py-1">
-                {tema}
-              </Badge>
-            )}
-            {arquivo && (
-              <Badge variant="outline" className="text-base px-3 py-1">
-                📎 {arquivo}
-              </Badge>
-            )}
-            <span className="text-sm text-muted-foreground">
-              {jurisprudences.length} jurisprudências encontradas
-            </span>
           </div>
         </div>
 
@@ -259,32 +275,70 @@ Os tribunais estaduais seguem essa mesma orientação, estabelecendo critérios 
             ))}
           </div>
 
-          {/* Sidebar com Chat */}
+          {/* Sidebar com Análise da IA */}
           <div className="lg:col-span-1">
-            <div className="sticky top-24 space-y-4">
-              {!showChat ? (
-                <div className="bg-card rounded-xl border border-border shadow-medium p-6 text-center animate-fade-in">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-accent/10 rounded-full mb-4">
-                    <MessageSquare className="w-8 h-8 text-accent" />
+            <div className="sticky top-24">
+              <div className="bg-card rounded-xl border border-border shadow-medium p-6 animate-fade-in">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2 bg-accent/10 rounded-lg">
+                    <Sparkles className="w-6 h-6 text-accent" />
                   </div>
-                  <h3 className="text-lg font-semibold text-primary mb-2">
-                    Converse com a IA
-                  </h3>
-                  <p className="text-sm text-muted-foreground mb-6">
-                    Tire dúvidas sobre o processo e as jurisprudências encontradas
-                  </p>
-                  <Button
-                    onClick={() => setShowChat(true)}
-                    className="w-full bg-gradient-primary hover:opacity-90"
-                    size="lg"
-                  >
-                    <MessageSquare className="w-4 h-4 mr-2" />
-                    Iniciar Chat com a IA
-                  </Button>
+                  <div>
+                    <h3 className="text-lg font-semibold text-primary">
+                      Análise da IA
+                    </h3>
+                    <p className="text-xs text-muted-foreground">
+                      {jurisprudences.filter(j => j.isHighlighted).length > 0 
+                        ? "Jurisprudência mais aplicável" 
+                        : `${jurisprudences.length} jurisprudências analisadas`}
+                    </p>
+                  </div>
                 </div>
-              ) : (
-                <ChatInterface />
-              )}
+
+                <div className="space-y-4">
+                  <div className="p-4 bg-accent/5 rounded-lg border border-accent/20">
+                    <p className="text-sm text-foreground/90 leading-relaxed">
+                      {jurisprudences.filter(j => j.isHighlighted).length > 0 ? (
+                        <>
+                          A jurisprudência <strong className="text-primary">REsp 1.234.567/SP</strong> do STJ é a mais aplicável ao caso. 
+                          Trata-se de precedente vinculante que estabelece responsabilidade objetiva em acidentes de trânsito quando 
+                          comprovado o nexo causal, aplicando-se diretamente ao processo analisado.
+                        </>
+                      ) : (
+                        <>
+                          Foram identificadas <strong className="text-primary">{jurisprudences.length} jurisprudências</strong> relevantes 
+                          sobre o tema pesquisado. A jurisprudência dominante dos tribunais superiores estabelece critérios 
+                          consolidados para casos dessa natureza, com entendimento uniforme sobre a matéria.
+                        </>
+                      )}
+                    </p>
+                  </div>
+
+                  {jurisprudences.filter(j => j.isHighlighted).length > 0 && (
+                    <div className="space-y-3">
+                      <h4 className="text-sm font-semibold text-primary">Pontos-chave:</h4>
+                      <ul className="space-y-2 text-sm text-foreground/80">
+                        <li className="flex items-start gap-2">
+                          <span className="text-accent mt-1">•</span>
+                          <span>Responsabilidade civil objetiva comprovada</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-accent mt-1">•</span>
+                          <span>Nexo causal demonstrado entre conduta e dano</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-accent mt-1">•</span>
+                          <span>Precedente vinculante do STJ aplicável</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-accent mt-1">•</span>
+                          <span>Reconhecimento de danos morais em casos análogos</span>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </div>
