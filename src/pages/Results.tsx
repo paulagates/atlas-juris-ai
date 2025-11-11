@@ -205,7 +205,7 @@ Pelo exposto, dou provimento ao recurso para determinar a revisão das cláusula
               <JurisprudenceCard
                 key={jurisprudence.id}
                 {...jurisprudence}
-                showRelevanceReason={!isThemeSearch}
+                showRelevanceReason={false}
                 onViewDetails={() => handleViewDetails(jurisprudence)}
               />
             ))}
