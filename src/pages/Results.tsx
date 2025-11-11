@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Scale, Sparkles, Loader2, FileText } from "lucide-react";
+import { Scale, Sparkles, FileText } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import JurisprudenceCard from "@/components/JurisprudenceCard";
 import JurisprudenceDetailDialog from "@/components/JurisprudenceDetailDialog";
-import AnalysisResult from "@/components/AnalysisResult";
 import ProcessSummary from "@/components/ProcessSummary";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -24,8 +23,6 @@ const Results = () => {
   const [selectedJurisprudence, setSelectedJurisprudence] = useState<any>(null);
   const [showDetailDialog, setShowDetailDialog] = useState(false);
   const [showProcessSummary, setShowProcessSummary] = useState(false);
-  const [isGeneratingAnalysis, setIsGeneratingAnalysis] = useState(false);
-  const [analysisResult, setAnalysisResult] = useState<any>(null);
 
   // Dados do processo
   const processTheme = "Responsabilidade Civil - Acidente de Trânsito";
@@ -50,6 +47,7 @@ const Results = () => {
       processNumber: "REsp 1.234.567/SP",
       relator: "Min. Nancy Andrighi",
       tags: ["Responsabilidade Civil", "Acidente de Trânsito", "Nexo Causal"],
+      isHighlightedOrder: 1,
       fullText: `RECURSO ESPECIAL. DIREITO CIVIL. RESPONSABILIDADE CIVIL. ACIDENTE DE TRÂNSITO. DANOS MORAIS E MATERIAIS.
 
 VOTO
@@ -74,8 +72,9 @@ Ante o exposto, conheço do recurso e dou-lhe provimento para condenar o réu ao
       tribunal: "TJSP - Tribunal de Justiça de São Paulo",
       date: "10/03/2024",
       excerpt: "O deferimento de liminar em tutela de urgência requer a demonstração inequívoca dos requisitos de probabilidade do direito e perigo de dano ou risco ao resultado útil do processo.",
-      relevanceReason: "Decisão recente do TJSP que estabelece critérios semelhantes aos aplicados no processo. Jurisprudência dominante no tribunal competente para análise do recurso.",
-      isHighlighted: false,
+      relevanceReason: "Jurisprudência complementar do TJSP sobre quantificação de danos morais em casos de lesões corporais. Estabelece parâmetros importantes para valoração da indenização em situações análogas ao caso analisado.",
+      isHighlighted: shouldShowHighlighted,
+      isHighlightedOrder: 2,
       processNumber: "AI 2.345.678-01.2024.8.26.0000",
       relator: "Des. João Silva",
       tags: ["Tutela de Urgência", "Processo Civil", "Liminar"],
@@ -123,42 +122,6 @@ Pelo exposto, dou provimento ao recurso para determinar a revisão das cláusula
     setShowDetailDialog(true);
   };
 
-  const handleGenerateAnalysis = async () => {
-    setIsGeneratingAnalysis(true);
-    
-    // Simula geração de análise (aqui você integraria com Lovable AI)
-    setTimeout(() => {
-      setAnalysisResult({
-        summary: `Após análise detalhada das ${jurisprudences.length} jurisprudências encontradas, observa-se uma linha jurisprudencial consolidada nos tribunais superiores quanto à responsabilidade civil em acidentes de trânsito.
-
-O STJ tem reiteradamente reconhecido a aplicação da responsabilidade objetiva quando demonstrado o nexo causal entre a conduta do agente e o dano causado, conforme precedente vinculante mais relevante ao caso (REsp 1.234.567/SP).
-
-Os tribunais estaduais seguem essa mesma orientação, estabelecendo critérios claros para a caracterização do dever de indenizar, incluindo danos morais e materiais. A jurisprudência analisada demonstra uniformidade na aplicação dos artigos 186, 927 e 944 do Código Civil.`,
-        strengths: [
-          "Precedente vinculante do STJ (REsp 1.234.567/SP) estabelece entendimento favorável quanto à responsabilidade objetiva em casos análogos ao presente",
-          "Jurisprudência consolidada e uniforme nos tribunais superiores sobre a aplicação do nexo causal como elemento essencial da responsabilidade civil",
-          "Reconhecimento pacífico do direito à indenização por danos morais em casos de lesões graves com sequelas permanentes",
-          "Ampla documentação probatória disponível nas decisões analisadas que podem fundamentar a tese defensiva"
-        ],
-        weaknesses: [
-          "Necessidade de demonstração inequívoca do nexo causal entre a conduta e o dano, conforme exigido pelo precedente do STJ",
-          "Alguns tribunais têm adotado critérios mais rigorosos para a quantificação de danos morais, o que pode impactar o valor da indenização",
-          "A existência de culpa concorrente pode reduzir substancialmente o montante indenizatório, conforme jurisprudência do TJSP",
-          "Tendência recente de maior rigor na análise de provas periciais para caracterização de sequelas permanentes"
-        ],
-        recommendations: [
-          "Utilizar o precedente do STJ (REsp 1.234.567/SP) como fundamento principal da argumentação, dada sua natureza vinculante e aplicação direta ao caso",
-          "Reforçar a demonstração do nexo causal através de laudos periciais detalhados e prova testemunhal consistente",
-          "Antecipar possíveis alegações de culpa concorrente com argumentação preventiva baseada na jurisprudência favorável do TJRJ",
-          "Considerar a quantificação dos danos morais com base em precedentes recentes dos tribunais superiores para evitar arbitramento insuficiente",
-          "Juntar aos autos cópias das jurisprudências mais relevantes, especialmente o acórdão completo do REsp 1.234.567/SP"
-        ],
-        conclusion: "A análise consolidada das jurisprudências demonstra uma alta probabilidade de êxito da tese jurídica proposta, especialmente considerando o precedente vinculante do STJ que se aplica diretamente ao caso concreto. Recomenda-se fundamentar a peça processual prioritariamente neste precedente, reforçando a demonstração do nexo causal e antecipando possíveis contraposições da parte adversa. A linha jurisprudencial é favorável e consolidada, o que confere segurança jurídica à estratégia adotada."
-      });
-      setIsGeneratingAnalysis(false);
-    }, 2000);
-  };
-
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
@@ -197,26 +160,6 @@ Os tribunais estaduais seguem essa mesma orientação, estabelecendo critérios 
                 </TooltipProvider>
               )}
             </div>
-            {!isThemeSearch && (
-              <Button
-                size="lg"
-                className="bg-gradient-primary hover:opacity-90 shrink-0"
-                onClick={handleGenerateAnalysis}
-                disabled={isGeneratingAnalysis}
-              >
-                {isGeneratingAnalysis ? (
-                  <>
-                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                    Gerando análise...
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="w-5 h-5 mr-2" />
-                    Gerar Análise Completa
-                  </>
-                )}
-              </Button>
-            )}
           </div>
           <div className="space-y-3">
             <div className="flex items-center gap-3 flex-wrap">
@@ -254,13 +197,6 @@ Os tribunais estaduais seguem essa mesma orientação, estabelecendo critérios 
           </div>
         </div>
 
-
-        {/* Resultado da Análise - aparece acima das jurisprudências */}
-        {analysisResult && (
-          <div className="mb-6">
-            <AnalysisResult analysis={analysisResult} />
-          </div>
-        )}
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Lista de Jurisprudências */}
@@ -300,9 +236,15 @@ Os tribunais estaduais seguem essa mesma orientação, estabelecendo critérios 
                     <p className="text-sm text-foreground/90 leading-relaxed">
                       {jurisprudences.filter(j => j.isHighlighted).length > 0 ? (
                         <>
-                          A jurisprudência <strong className="text-primary">REsp 1.234.567/SP</strong> do STJ é a mais aplicável ao caso. 
-                          Trata-se de precedente vinculante que estabelece responsabilidade objetiva em acidentes de trânsito quando 
-                          comprovado o nexo causal, aplicando-se diretamente ao processo analisado.
+                          Foram identificadas <strong className="text-primary">2 jurisprudências principais</strong> aplicáveis ao caso:
+                          <br /><br />
+                          <strong className="text-primary">1. REsp 1.234.567/SP (STJ)</strong> - Precedente vinculante que estabelece 
+                          responsabilidade objetiva em acidentes de trânsito quando comprovado o nexo causal entre a conduta e o dano causado. 
+                          Este precedente se aplica diretamente ao caso concreto.
+                          <br /><br />
+                          <strong className="text-primary">2. AI 2.345.678-01.2024.8.26.0000 (TJSP)</strong> - Jurisprudência complementar 
+                          que define parâmetros para quantificação de danos morais em casos de lesões corporais, fornecendo critérios 
+                          objetivos para valoração da indenização em situações análogas.
                         </>
                       ) : (
                         <>
@@ -315,27 +257,39 @@ Os tribunais estaduais seguem essa mesma orientação, estabelecendo critérios 
                   </div>
 
                   {jurisprudences.filter(j => j.isHighlighted).length > 0 && (
-                    <div className="space-y-3">
-                      <h4 className="text-sm font-semibold text-primary">Pontos-chave:</h4>
-                      <ul className="space-y-2 text-sm text-foreground/80">
-                        <li className="flex items-start gap-2">
-                          <span className="text-accent mt-1">•</span>
-                          <span>Responsabilidade civil objetiva comprovada</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-accent mt-1">•</span>
-                          <span>Nexo causal demonstrado entre conduta e dano</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-accent mt-1">•</span>
-                          <span>Precedente vinculante do STJ aplicável</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-accent mt-1">•</span>
-                          <span>Reconhecimento de danos morais em casos análogos</span>
-                        </li>
-                      </ul>
-                    </div>
+                    <>
+                      <div className="space-y-3">
+                        <h4 className="text-sm font-semibold text-primary">Análise Consolidada:</h4>
+                        <p className="text-sm text-foreground/80 leading-relaxed">
+                          A combinação destes precedentes estabelece uma base jurídica sólida para o caso. 
+                          O STJ fornece o fundamento principal sobre responsabilidade civil, enquanto o TJSP 
+                          complementa com critérios práticos de quantificação, criando um arcabouço jurisprudencial 
+                          robusto e aplicável.
+                        </p>
+                      </div>
+                      
+                      <div className="space-y-3">
+                        <h4 className="text-sm font-semibold text-primary">Pontos-chave:</h4>
+                        <ul className="space-y-2 text-sm text-foreground/80">
+                          <li className="flex items-start gap-2">
+                            <span className="text-accent mt-1">•</span>
+                            <span>Responsabilidade civil objetiva fundamentada em precedente do STJ</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-accent mt-1">•</span>
+                            <span>Critérios de quantificação definidos pelo TJSP</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-accent mt-1">•</span>
+                            <span>Nexo causal como elemento central da responsabilização</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-accent mt-1">•</span>
+                            <span>Reconhecimento consolidado de danos morais em casos análogos</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </>
                   )}
                 </div>
               </div>
