@@ -129,60 +129,17 @@ Pelo exposto, dou provimento ao recurso para determinar a revisão das cláusula
       <main className="flex-1 container mx-auto px-4 py-8">
         {/* Cabeçalho dos Resultados */}
         <div className="mb-8 animate-fade-in">
-          <div className="bg-card rounded-xl border border-border shadow-medium p-6">
-            <div className="flex items-start justify-between gap-6 mb-4">
-              <div className="flex-1">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="p-2 bg-primary/10 rounded-lg">
-                    <Scale className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <h1 className="text-2xl font-bold text-primary">
-                      Jurisprudências Relacionadas
-                    </h1>
-                    <p className="text-sm text-muted-foreground mt-0.5">
-                      {jurisprudences.length} resultados encontrados
-                    </p>
-                  </div>
-                </div>
-                
-                {processNumber && (
-                  <div className="flex items-center gap-2 mb-2">
-                    <Badge variant="secondary" className="text-sm px-3 py-1 font-mono">
-                      {processNumber}
-                    </Badge>
-                  </div>
-                )}
-
-                {!isThemeSearch && (
-                  <div className="space-y-2 pt-3 border-t border-border/50">
-                    <h2 className="font-semibold text-primary flex items-center gap-2">
-                      <Scale className="w-4 h-4" />
-                      {processTheme}
-                    </h2>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      {processBriefSummary}
-                    </p>
-                  </div>
-                )}
-
-                {tema && (
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline" className="text-sm px-3 py-1">
-                      {tema}
-                    </Badge>
-                  </div>
-                )}
-                
-                {arquivo && (
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline" className="text-sm px-3 py-1">
-                      📎 {arquivo}
-                    </Badge>
-                  </div>
-                )}
-              </div>
-
+          <div className="flex items-center gap-2 text-muted-foreground mb-2">
+            <Scale className="w-4 h-4" />
+            <span className="text-sm">
+              {processNumber ? "Processo" : tema ? "Tema" : "Busca"}
+            </span>
+          </div>
+          <div className="flex items-start justify-between gap-4 mb-2">
+            <div className="flex items-center gap-3">
+              <h1 className="text-3xl font-bold text-primary">
+                Jurisprudências relacionadas
+              </h1>
               {!isThemeSearch && (
                 <TooltipProvider>
                   <Tooltip>
@@ -197,12 +154,46 @@ Pelo exposto, dou provimento ao recurso para determinar a revisão das cláusula
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>Ver resumo completo do processo</p>
+                      <p>Ver resumo do processo</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
               )}
             </div>
+          </div>
+          <div className="space-y-3">
+            <div className="flex items-center gap-3 flex-wrap">
+              {processNumber && (
+                <Badge variant="outline" className="text-base px-3 py-1">
+                  {processNumber}
+                </Badge>
+              )}
+              {tema && (
+                <Badge variant="outline" className="text-base px-3 py-1">
+                  {tema}
+                </Badge>
+              )}
+              {arquivo && (
+                <Badge variant="outline" className="text-base px-3 py-1">
+                  📎 {arquivo}
+                </Badge>
+              )}
+              <span className="text-sm text-muted-foreground">
+                {jurisprudences.length} jurisprudências encontradas
+              </span>
+            </div>
+            
+            {!isThemeSearch && (
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <Scale className="w-4 h-4 text-primary" />
+                  <h2 className="font-semibold text-primary">{processTheme}</h2>
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {processBriefSummary}
+                </p>
+              </div>
+            )}
           </div>
         </div>
 
